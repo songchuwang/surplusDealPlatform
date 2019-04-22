@@ -35,5 +35,7 @@
 </script>
 
 <style scoped>
-
+  .m-user{
+    text-align: right;
+  }
 </style>
