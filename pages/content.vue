@@ -7,7 +7,9 @@
             <li>
               <span class="popular">热门</span>
               <div class="category-details">
-                <a href="#">手机</a>
+                <nuxt-link to="/goodsList">
+                  <a href="#">手机</a>
+                </nuxt-link>
                 <a href="#">笔记本电脑</a>
               </div>
             </li>
