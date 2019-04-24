@@ -140,7 +140,7 @@
 
       <div class="buy-item">
         <div class="buy-item-header">
-          <h4>大家电</h4>
+          <h4>家装软饰</h4>
         </div>
         <!-- 单项 -->
         <div class="buy-item-inner-item">
@@ -168,7 +168,7 @@
       </div>
       <div class="buy-item">
         <div class="buy-item-header">
-          <h4>大家电</h4>
+          <h4>生活电器</h4>
         </div>
         <!-- 单项 -->
         <div class="buy-item-inner-item">
@@ -196,7 +196,7 @@
       </div>
       <div class="buy-item">
         <div class="buy-item-header">
-          <h4>大家电</h4>
+          <h4>厨房小电</h4>
         </div>
         <!-- 单项 -->
         <div class="buy-item-inner-item">
@@ -224,7 +224,7 @@
       </div>
       <div class="buy-item">
         <div class="buy-item-header">
-          <h4>大家电</h4>
+          <h4>手机通讯</h4>
         </div>
         <!-- 单项 -->
         <div class="buy-item-inner-item">
@@ -252,7 +252,7 @@
       </div>
       <div class="buy-item">
         <div class="buy-item-header">
-          <h4>大家电</h4>
+          <h4>数码配件</h4>
         </div>
         <!-- 单项 -->
         <div class="buy-item-inner-item">
