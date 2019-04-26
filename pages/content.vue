@@ -95,10 +95,18 @@
       </div>
       <div class="content-sale">
         <ul>
-          <li><a href="#"><img src="../assets/img/sale_entrance1.png" alt=""></a></li>
-          <li><a href="#"><img src="../assets/img/sale_entrance2.png" alt=""></a></li>
-          <li><a href="#"><img src="../assets/img/sale_entrance3.png" alt=""></a></li>
-          <li><a href="#"><img src="../assets/img/sale_entrance4.png" alt=""></a></li>
+          <nuxt-link to="/release">
+            <li><a href="#"><img src="../assets/img/sale_entrance1.png" alt=""></a></li>
+          </nuxt-link>
+          <nuxt-link to="/release">
+            <li><a href="#"><img src="../assets/img/sale_entrance2.png" alt=""></a></li>
+          </nuxt-link>
+          <nuxt-link to="/release">
+            <li><a href="#"><img src="../assets/img/sale_entrance3.png" alt=""></a></li>
+          </nuxt-link>
+          <nuxt-link to="/release">
+            <li><a href="#"><img src="../assets/img/sale_entrance4.png" alt=""></a></li>
+          </nuxt-link>
         </ul>
       </div>
     </div>
@@ -113,26 +121,14 @@
         <!-- 单项 -->
         <div class="buy-item-inner-item">
           <ul>
-            <li>
-
-              <nuxt-link to="goodsDetails">
-                <img src="http://placehold.it/170x170" alt="">
+            <li v-for="(item, index) in large_appliances" :key="index">
+              <nuxt-link :to="{name:'goodsDetails',query:{search:item._id}}">
+                <!-- <nuxt-link :to =`/goodsDetails/${index}`> -->
+                <img :src="`data:image/jpg;base64,${item.imgs[0].url}`" alt="">
               </nuxt-link>
-              <p class="item-header">苹果手机iPhone7 128G</p>
-              <span class="item-description">价钱可商量哦~大四毕业大四毕业</span>
-              <span class="item-price">￥998</span>
-            </li>
-            <li>
-              <img src="http://placehold.it/170x170" alt="">
-              <p class="item-header">苹果手机iPhone7 128G</p>
-              <span class="item-description">价钱可商量哦~大四毕业大四毕业</span>
-              <span class="item-price">￥998</span>
-            </li>
-            <li>
-              <img src="http://placehold.it/170x170" alt="">
-              <p class="item-header">苹果手机iPhone7 128G</p>
-              <span class="item-description">价钱可商量哦~大四毕业大四毕业</span>
-              <span class="item-price">￥998</span>
+              <p class="item-header">{{item.gname}}</p>
+              <span class="item-description">{{item.desc}}</span>
+              <span class="item-price">￥{{item.sale_price}}</span>
             </li>
           </ul>
         </div>
@@ -145,23 +141,14 @@
         <!-- 单项 -->
         <div class="buy-item-inner-item">
           <ul>
-            <li>
-              <img src="http://placehold.it/170x170" alt="">
-              <p class="item-header">苹果手机iPhone7 128G</p>
-              <span class="item-description">价钱可商量哦~大四毕业大四毕业</span>
-              <span class="item-price">￥998</span>
-            </li>
-            <li>
-              <img src="http://placehold.it/170x170" alt="">
-              <p class="item-header">苹果手机iPhone7 128G</p>
-              <span class="item-description">价钱可商量哦~大四毕业大四毕业</span>
-              <span class="item-price">￥998</span>
-            </li>
-            <li>
-              <img src="http://placehold.it/170x170" alt="">
-              <p class="item-header">苹果手机iPhone7 128G</p>
-              <span class="item-description">价钱可商量哦~大四毕业大四毕业</span>
-              <span class="item-price">￥998</span>
+            <li v-for="(item, index) in decoration" :key="index">
+              <nuxt-link :to="{name:'goodsDetails',query:{search:item._id}}">
+                <!-- <nuxt-link :to =`/goodsDetails/${index}`> -->
+                <img :src="`data:image/jpg;base64,${item.imgs[0].url}`" alt="">
+              </nuxt-link>
+              <p class="item-header">{{item.gname}}</p>
+              <span class="item-description">{{item.desc}}</span>
+              <span class="item-price">￥{{item.sale_price}}</span>
             </li>
           </ul>
         </div>
@@ -173,23 +160,14 @@
         <!-- 单项 -->
         <div class="buy-item-inner-item">
           <ul>
-            <li>
-              <img src="http://placehold.it/170x170" alt="">
-              <p class="item-header">苹果手机iPhone7 128G</p>
-              <span class="item-description">价钱可商量哦~大四毕业大四毕业</span>
-              <span class="item-price">￥998</span>
-            </li>
-            <li>
-              <img src="http://placehold.it/170x170" alt="">
-              <p class="item-header">苹果手机iPhone7 128G</p>
-              <span class="item-description">价钱可商量哦~大四毕业大四毕业</span>
-              <span class="item-price">￥998</span>
-            </li>
-            <li>
-              <img src="http://placehold.it/170x170" alt="">
-              <p class="item-header">苹果手机iPhone7 128G</p>
-              <span class="item-description">价钱可商量哦~大四毕业大四毕业</span>
-              <span class="item-price">￥998</span>
+            <li v-for="(item, index) in living_appliances" :key="index">
+              <nuxt-link :to="{name:'goodsDetails',query:{search:item._id}}">
+                <!-- <nuxt-link :to =`/goodsDetails/${index}`> -->
+                <img :src="`data:image/jpg;base64,${item.imgs[0].url}`" alt="">
+              </nuxt-link>
+              <p class="item-header">{{item.gname}}</p>
+              <span class="item-description">{{item.desc}}</span>
+              <span class="item-price">￥{{item.sale_price}}</span>
             </li>
           </ul>
         </div>
@@ -201,23 +179,14 @@
         <!-- 单项 -->
         <div class="buy-item-inner-item">
           <ul>
-            <li>
-              <img src="http://placehold.it/170x170" alt="">
-              <p class="item-header">苹果手机iPhone7 128G</p>
-              <span class="item-description">价钱可商量哦~大四毕业大四毕业</span>
-              <span class="item-price">￥998</span>
-            </li>
-            <li>
-              <img src="http://placehold.it/170x170" alt="">
-              <p class="item-header">苹果手机iPhone7 128G</p>
-              <span class="item-description">价钱可商量哦~大四毕业大四毕业</span>
-              <span class="item-price">￥998</span>
-            </li>
-            <li>
-              <img src="http://placehold.it/170x170" alt="">
-              <p class="item-header">苹果手机iPhone7 128G</p>
-              <span class="item-description">价钱可商量哦~大四毕业大四毕业</span>
-              <span class="item-price">￥998</span>
+            <li v-for="(item, index) in book" :key="index">
+              <nuxt-link :to="{name:'goodsDetails',query:{search:item._id}}">
+                <!-- <nuxt-link :to =`/goodsDetails/${index}`> -->
+                <img :src="`data:image/jpg;base64,${item.imgs[0].url}`" alt="">
+              </nuxt-link>
+              <p class="item-header">{{item.gname}}</p>
+              <span class="item-description">{{item.desc}}</span>
+              <span class="item-price">￥{{item.sale_price}}</span>
             </li>
           </ul>
         </div>
@@ -229,23 +198,14 @@
         <!-- 单项 -->
         <div class="buy-item-inner-item">
           <ul>
-            <li>
-              <img src="http://placehold.it/170x170" alt="">
-              <p class="item-header">苹果手机iPhone7 128G</p>
-              <span class="item-description">价钱可商量哦~大四毕业大四毕业</span>
-              <span class="item-price">￥998</span>
-            </li>
-            <li>
-              <img src="http://placehold.it/170x170" alt="">
-              <p class="item-header">苹果手机iPhone7 128G</p>
-              <span class="item-description">价钱可商量哦~大四毕业大四毕业</span>
-              <span class="item-price">￥998</span>
-            </li>
-            <li>
-              <img src="http://placehold.it/170x170" alt="">
-              <p class="item-header">苹果手机iPhone7 128G</p>
-              <span class="item-description">价钱可商量哦~大四毕业大四毕业</span>
-              <span class="item-price">￥998</span>
+            <li v-for="(item, index) in phoneList" :key="index">
+              <nuxt-link :to="{name:'goodsDetails',query:{search:item._id}}">
+                <!-- <nuxt-link :to =`/goodsDetails/${index}`> -->
+                <img :src="`data:image/jpg;base64,${item.imgs[0].url}`" alt="">
+              </nuxt-link>
+              <p class="item-header">{{item.gname}}</p>
+              <span class="item-description">{{item.desc}}</span>
+              <span class="item-price">￥{{item.sale_price}}</span>
             </li>
           </ul>
         </div>
@@ -257,23 +217,14 @@
         <!-- 单项 -->
         <div class="buy-item-inner-item">
           <ul>
-            <li>
-              <img src="http://placehold.it/170x170" alt="">
-              <p class="item-header">苹果手机iPhone7 128G</p>
-              <span class="item-description">价钱可商量哦~大四毕业大四毕业</span>
-              <span class="item-price">￥998</span>
-            </li>
-            <li>
-              <img src="http://placehold.it/170x170" alt="">
-              <p class="item-header">苹果手机iPhone7 128G</p>
-              <span class="item-description">价钱可商量哦~大四毕业大四毕业</span>
-              <span class="item-price">￥998</span>
-            </li>
-            <li>
-              <img src="http://placehold.it/170x170" alt="">
-              <p class="item-header">苹果手机iPhone7 128G</p>
-              <span class="item-description">价钱可商量哦~大四毕业大四毕业</span>
-              <span class="item-price">￥998</span>
+            <li v-for="(item, index) in digital" :key="index">
+              <nuxt-link :to="{name:'goodsDetails',query:{search:item._id}}">
+                <!-- <nuxt-link :to =`/goodsDetails/${index}`> -->
+                <img :src="`data:image/jpg;base64,${item.imgs[0].url}`" alt="">
+              </nuxt-link>
+              <p class="item-header">{{item.gname}}</p>
+              <span class="item-description">{{item.desc}}</span>
+              <span class="item-price">￥{{item.sale_price}}</span>
             </li>
           </ul>
         </div>
@@ -286,6 +237,13 @@
   export default {
     data() {
       return {
+        goods: '',
+        phoneList: '',
+        large_appliances: '',
+        decoration: '',
+        living_appliances: '',
+        digital: '',
+        book: '',
         banner_list: [{
             url: require('../assets//img/slide_1.png')
           },
@@ -297,7 +255,29 @@
           }
         ]
       }
+    },
+    created() {
+      this.getAllGoods()
+    },
+    methods: {
+      filterData(kind) {
+        return this.goods.filter((item) => {
+          return item.type[0].kind == kind
+        });
+      },
+      getAllGoods() {
+        this.$axios.post('/goods/getGoods').then(res => {
+          this.goods = res.data.data
+          this.phoneList = this.filterData('phone').slice(0, 3);
+          this.large_appliances = this.filterData('large_appliances').slice(0, 3);;
+          this.decoration = this.filterData('decoration').slice(0, 3);;
+          this.living_appliances = this.filterData('living_appliances').slice(0, 3);;
+          this.digital = this.filterData('digital').slice(0, 3);;
+          this.book = this.filterData('book').slice(0, 3);
+        })
+      }
     }
+
   }
 
 </script>
@@ -577,6 +557,11 @@
             width: 170px;
             height: 272px;
             list-style: none;
+
+            img {
+              width: 170px;
+              height: 170px;
+            }
 
             .item-header {
               height: 42px;

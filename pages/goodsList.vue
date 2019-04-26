@@ -7,37 +7,21 @@
         </div>
         <div class="category-list">
           <ul>
-            <li><a href="#">手机</a></li>
-            <li><a href="#">笔记本电脑</a></li>
-            <li><a href="#">平板</a></li>
-            <li><a href="#">台式机</a></li>
-            <li><a href="#">显示器</a></li>
-            <li><a href="#">单反相机</a></li>
-            <li><a href="#">手表</a></li>
-            <li><a href="#">箱包</a></li>
-            <li><a href="#">冰箱</a></li>
-            <li><a href="#">洗衣机</a></li>
-            <li><a href="#">教材</a></li>
-            <li><a href="#">励志</a></li>
-            <li><a href="#">化妆品</a></li>
-            <li><a href="#">男装</a></li>
-            <li><a href="#">女装</a></li>
-            <li><a href="#">玩具</a></li>
-            <li><a href="#">厨具</a></li>
-            <li><a href="#">酒类</a></li>
+            <li @click="selectGoods(item)" v-for="(item, index) in goods_list" :key="index"><a
+                href="#">{{item.label}}</a></li>
           </ul>
         </div>
       </div>
 
       <div class="filter-title">
         <div class="filter-title-top">
-          手机
+          {{this.select_goods}}
         </div>
         <div class="filter-title-bottom">
           <ul>
             <li><a href="#">综合</a></li>
             <li><a href="#">最新发布</a></li>
-            <li class="topBottomIcon"><a href="#">价格</a></li>
+            <li class="topBottomIcon"><a @click="sortPrice" href="#">价格</a></li>
             <li>
               <el-checkbox fill="#ddd" v-model="checked">包邮</el-checkbox>
             </li>
@@ -46,185 +30,39 @@
       </div>
 
       <div class="goods">
-        <div class="item">
-          <div class="goods-title">
-            <div class="goods-title-img">
-              <img src="http://placehold.it/30x30" alt="">
-              <h5>songchuwang</h5>
+        <div class="item" v-for="(item, index) in this.kind_goods" :key="index">
+          <nuxt-link :to="{name:'goodsDetails',query:{search:item._id}}">
+            <div class="goods-title">
+              <div class="goods-title-img">
+                <img src="http://placehold.it/30x30" alt="">
+                <h5>songchuwang</h5>
+              </div>
+              <div class="goods-title-time">32分钟前来过</div>
             </div>
-            <div class="goods-title-time">32分钟前来过</div>
-          </div>
-          <div class="goods-img">
-            <img src="../assets/img/good_example.png" alt="">
-          </div>
-          <div class="goods-text">
-            <p>Apple 苹果6 iPhone6 手机 金色 全网通 (32GB)</p>
-            <p>金色 全网通 (32GB) 机子买来一年多点，没有配件，只有裸机，刚换了原装个电池峰值100，自己不怎么爱护，后壳有划伤，机子绝对没有问题，外观要求不高的值得入手</p>
-          </div>
-          <div class="goods-price">
-            <div class="reality-price">
-              <i>￥</i>
-              <span>1989</span>
+            <div class="goods-img">
+
+              <img :src="`data:image/jpg;base64,${item.imgs[0].url}`" alt="">
+
             </div>
-            <div class="original-price">
-              <i>￥</i>
-              <span>2998</span>
+            <div class="goods-text">
+              <p>{{item.gname}}</p>
+              <p>{{item.desc}}</p>
             </div>
-          </div>
-          <div class="goods-site">
-            <img src="../assets/img/location.png" alt="">
-            <div>广东深圳市 宝安区</div>
-          </div>
-        </div>
-        <div class="item">
-          <div class="goods-title">
-            <div class="goods-title-img">
-              <img src="http://placehold.it/30x30" alt="">
-              <h5>songchuwang</h5>
+            <div class="goods-price">
+              <div class="reality-price">
+                <i>￥</i>
+                <span>{{item.sale_price}}</span>
+              </div>
+              <div class="original-price">
+                <i>￥</i>
+                <span>{{item.original_price}}</span>
+              </div>
             </div>
-            <div class="goods-title-time">32分钟前来过</div>
-          </div>
-          <div class="goods-img">
-            <img src="../assets/img/good_example.png" alt="">
-          </div>
-          <div class="goods-text">
-            <p>Apple 苹果6 iPhone6 手机 金色 全网通 (32GB)</p>
-            <p>金色 全网通 (32GB) 机子买来一年多点，没有配件，只有裸机，刚换了原装个电池峰值100，自己不怎么爱护，后壳有划伤，机子绝对没有问题，外观要求不高的值得入手</p>
-          </div>
-          <div class="goods-price">
-            <div class="reality-price">
-              <i>￥</i>
-              <span>1989</span>
+            <div class="goods-site">
+              <img src="../assets/img/location.png" alt="">
+              <div>{{item.address}}</div>
             </div>
-            <div class="original-price">
-              <i>￥</i>
-              <span>2998</span>
-            </div>
-          </div>
-          <div class="goods-site">
-            <img src="../assets/img/location.png" alt="">
-            <div>广东深圳市 宝安区</div>
-          </div>
-        </div>
-        <div class="item">
-          <div class="goods-title">
-            <div class="goods-title-img">
-              <img src="http://placehold.it/30x30" alt="">
-              <h5>songchuwang</h5>
-            </div>
-            <div class="goods-title-time">32分钟前来过</div>
-          </div>
-          <div class="goods-img">
-            <img src="../assets/img/good_example.png" alt="">
-          </div>
-          <div class="goods-text">
-            <p>Apple 苹果6 iPhone6 手机 金色 全网通 (32GB)</p>
-            <p>金色 全网通 (32GB) 机子买来一年多点，没有配件，只有裸机，刚换了原装个电池峰值100，自己不怎么爱护，后壳有划伤，机子绝对没有问题，外观要求不高的值得入手</p>
-          </div>
-          <div class="goods-price">
-            <div class="reality-price">
-              <i>￥</i>
-              <span>1989</span>
-            </div>
-            <div class="original-price">
-              <i>￥</i>
-              <span>2998</span>
-            </div>
-          </div>
-          <div class="goods-site">
-            <img src="../assets/img/location.png" alt="">
-            <div>广东深圳市 宝安区</div>
-          </div>
-        </div>
-        <div class="item">
-          <div class="goods-title">
-            <div class="goods-title-img">
-              <img src="http://placehold.it/30x30" alt="">
-              <h5>songchuwang</h5>
-            </div>
-            <div class="goods-title-time">32分钟前来过</div>
-          </div>
-          <div class="goods-img">
-            <img src="../assets/img/good_example.png" alt="">
-          </div>
-          <div class="goods-text">
-            <p>Apple 苹果6 iPhone6 手机 金色 全网通 (32GB)</p>
-            <p>金色 全网通 (32GB) 机子买来一年多点，没有配件，只有裸机，刚换了原装个电池峰值100，自己不怎么爱护，后壳有划伤，机子绝对没有问题，外观要求不高的值得入手</p>
-          </div>
-          <div class="goods-price">
-            <div class="reality-price">
-              <i>￥</i>
-              <span>1989</span>
-            </div>
-            <div class="original-price">
-              <i>￥</i>
-              <span>2998</span>
-            </div>
-          </div>
-          <div class="goods-site">
-            <img src="../assets/img/location.png" alt="">
-            <div>广东深圳市 宝安区</div>
-          </div>
-        </div>
-        <div class="item">
-          <div class="goods-title">
-            <div class="goods-title-img">
-              <img src="http://placehold.it/30x30" alt="">
-              <h5>songchuwang</h5>
-            </div>
-            <div class="goods-title-time">32分钟前来过</div>
-          </div>
-          <div class="goods-img">
-            <img src="../assets/img/good_example.png" alt="">
-          </div>
-          <div class="goods-text">
-            <p>Apple 苹果6 iPhone6 手机 金色 全网通 (32GB)</p>
-            <p>金色 全网通 (32GB) 机子买来一年多点，没有配件，只有裸机，刚换了原装个电池峰值100，自己不怎么爱护，后壳有划伤，机子绝对没有问题，外观要求不高的值得入手</p>
-          </div>
-          <div class="goods-price">
-            <div class="reality-price">
-              <i>￥</i>
-              <span>1989</span>
-            </div>
-            <div class="original-price">
-              <i>￥</i>
-              <span>2998</span>
-            </div>
-          </div>
-          <div class="goods-site">
-            <img src="../assets/img/location.png" alt="">
-            <div>广东深圳市 宝安区</div>
-          </div>
-        </div>
-        <div class="item">
-          <div class="goods-title">
-            <div class="goods-title-img">
-              <img src="http://placehold.it/30x30" alt="">
-              <h5>songchuwang</h5>
-            </div>
-            <div class="goods-title-time">32分钟前来过</div>
-          </div>
-          <div class="goods-img">
-            <img src="../assets/img/good_example.png" alt="">
-          </div>
-          <div class="goods-text">
-            <p>Apple 苹果6 iPhone6 手机 金色 全网通 (32GB)</p>
-            <p>金色 全网通 (32GB) 机子买来一年多点，没有配件，只有裸机，刚换了原装个电池峰值100，自己不怎么爱护，后壳有划伤，机子绝对没有问题，外观要求不高的值得入手</p>
-          </div>
-          <div class="goods-price">
-            <div class="reality-price">
-              <i>￥</i>
-              <span>1989</span>
-            </div>
-            <div class="original-price">
-              <i>￥</i>
-              <span>2998</span>
-            </div>
-          </div>
-          <div class="goods-site">
-            <img src="../assets/img/location.png" alt="">
-            <div>广东深圳市 宝安区</div>
-          </div>
+          </nuxt-link>
         </div>
       </div>
     </div>
@@ -233,7 +71,107 @@
 
 <script>
   export default {
+    data() {
+      return {
+        goods_list: [{
+          value: 'phone',
+          label: '手机',
+          kind: 'phone'
+        }, {
+          value: 'computer',
+          label: '笔记本电脑',
+          kind: 'digital'
+        }, {
+          value: 'flat',
+          label: '平板',
+          kind: 'digital'
+        }, {
+          value: 'desktop_computer',
+          label: '台式机',
+          kind: 'digital'
+        }, {
+          value: 'monitor',
+          label: '显示器',
+          kind: 'digital'
+        }, {
+          value: 'camera',
+          label: '单反相机',
+          kind: 'digital'
+        }, {
+          value: 'watch',
+          label: '手表',
+          kind: 'decoration'
+        }, {
+          value: 'bags',
+          label: '箱包',
+          kind: 'decoration'
+        }, {
+          value: 'refrigerator',
+          label: '冰箱',
+          kind: 'large_appliances'
+        }, {
+          value: 'machine',
+          label: '洗衣机',
+          kind: 'large_appliances'
+        }, {
+          value: 'teaching',
+          label: '教材',
+          kind: 'book'
+        }, {
+          value: 'self-Improvement',
+          label: '励志',
+          kind: 'book'
+        }, {
+          value: 'cosmetics',
+          label: '化妆品',
+          kind: 'decoration'
+        }, {
+          value: 'menswear',
+          label: '男装',
+          kind: 'decoration'
+        }, {
+          value: 'Womenwear',
+          label: '女装',
+          kind: 'decoration'
+        }, {
+          value: 'toys',
+          label: '玩具',
+          kind: 'decoration'
+        }, {
+          value: 'kitchen',
+          label: '厨具',
+          kind: 'living_appliances'
+        }, {
+          value: 'liquor',
+          label: '酒类',
+          kind: 'living_appliances'
+        }],
+        select_goods: '全部商品',
+        select_goods_list: '',
+        checked: false,
+        kind_goods: '',
+      }
+    },
+    mounted() {
+      this.$axios.post('/goods/getGoods').then(res => {
+        this.select_goods_list = res.data.data;
+        this.kind_goods = this.select_goods_list
+      })
+    },
+    methods: {
+      sortPrice() {
 
+      },
+      selectGoods(item) {
+        this.select_goods = item.label
+        this.showKindGoods(item.value);
+      },
+      showKindGoods(value) {
+        this.kind_goods = this.select_goods_list.filter((item) => {
+          return item.type[0].value == value
+        })
+      },
+    }
   }
 
 </script>
@@ -479,7 +417,9 @@
             .reality-price {
               margin: 0;
               padding: 0;
-
+            overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
               i {
                 font-style: normal;
                 font-size: 12px;
@@ -488,9 +428,13 @@
               }
 
               span {
+                width: 100px;
                 font-size: 20px;
                 color: #ff3434;
                 margin: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
               }
             }
 
@@ -498,10 +442,14 @@
               margin: 0;
               padding: 0;
               text-decoration: line-through;
+              color: #333;
               margin-left: 20px;
               height: 23px;
               line-height: 23px;
               margin-top: 3px;
+              overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
 
               i {
                 font-style: normal;

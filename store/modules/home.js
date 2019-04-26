@@ -1,6 +1,7 @@
 const state = ()=>({
   menu: [],
-  hotPlace: []
+  hotPlace: [],
+  user: '123456'
 })
 
 const mutations = {
@@ -9,6 +10,9 @@ const mutations = {
   },
   setHotPlace(state, val) {
     state.hotPlace = val
+  },
+  setUserId(state, val) {
+    state.user = val
   }
 }
 
@@ -18,6 +22,9 @@ const actions = {
   },
   setHotPlace: ({commit}, hotPlace)=>{
     commit('setHotPlace', hotPlace)
+  },
+  setUserId:({commit}, val)=>{
+    commit('setUserId', val)
   }
 }
 

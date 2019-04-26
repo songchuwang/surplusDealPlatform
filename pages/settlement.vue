@@ -20,24 +20,29 @@
       <h2 style="margin-top:40px">商品信息</h2>
       <div class="goods-infor">
         <div class="goods-infor-img">
-          <img src="http://placehold.it/100x100" alt="">
+          <img :src="`data:image/jpg;base64,${this.goodsInfor.imgs[0].url}`" alt="">
         </div>
         <div>
-          <h3 class="header">海尔（Haier）BC/BD-102HT 102升家用冰柜 冷藏冷冻转换 小型迷你冷柜 节能单温冰箱</h3>
-          <div class="decription">粉色萌象</div>
+          <h3 class="header">{{this.goodsInfor.gname}}</h3>
+          <!-- <h3 class="header">{{this.obj.gname}}</h3> -->
+          <div class="decription">{{this.goodsInfor.desc}}</div>
         </div>
       </div>
       <div class="order-info">
         <div class="order-info-price">
           <span>应付总金额：</span>
-          <span>¥ 10.00</span>
+          <span>¥ {{this.goodsInfor.sale_price}}</span>
         </div>
         <div class="order-info-detail">
           <p style="margin-right:50px">寄送至：<span>广东深圳市南山区南山区软件产业基地软件大厦6楼</span></p>
           <p>收货人：<span style="margin-right:10px">宋楚望</span><span>153****1156</span></p>
         </div>
       </div>
-      <div class="submit-order">提交订单</div>
+      <div class="submit-order">
+        <nuxt-link @click="addOrder" :to="{name:'personal',query:{buy:this.$route.query.buy}}">
+          <a @click="addOrder">提交订单</a>
+        </nuxt-link>
+      </div>
     </div>
   </div>
 </template>
@@ -46,6 +51,13 @@
   export default {
     data() {
       return {
+        goods_infor: '',
+        obj: {},
+        goodsInfor: {
+          imgs: [{
+            url:''
+          }]
+        },
         addresses: [{
             name: '宋楚望',
             address: '广东深圳市宝安区西乡街道共乐下塘二巷2号',
@@ -62,10 +74,40 @@
             phone: '153****1156'
           }
         ],
-        add_storage: []
+        add_storage: [],
+        
       }
     },
+    created () {
+     
+    },
+    mounted() {
+      this.$axios.post('/goods/getGoodInfor', {
+        _id: this.$route.query.buy
+      }).then(res => {
+        this.goodsInfor = res.data.data
+        // Object.assign({},this.goodsInfor, {
+        //   imgs: res.data.data.imgs
+        // })
+        console.log(this.goodsInfor);
+        console.log(this.goodsInfor.imgs[0]);
+        
+        
+      })
+      
+    },
     methods: {
+      addOrder() {
+        let uid = this.$store.state.geo.userId
+        let obj = Object.assign({},this.goodsInfor,{
+          id: uid
+        })
+        console.log(obj)
+        this.$axios.post('/goods/addorder', obj).then(res => {
+          console.log(res.data)
+        })
+      },
+     
       retractAdd() {
         // 深拷贝一份数据
         this.add_storage = JSON.parse(JSON.stringify(this.addresses))
@@ -241,6 +283,10 @@
 
       .goods-infor-img {
         margin-right: 20px;
+        img{
+          width: 100px;
+          height: 100px;
+        }
       }
 
       h3 {

@@ -2,14 +2,13 @@
   <div class="container">
     <el-breadcrumb style="height:60px;line-height: 60px;" separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>活动管理</el-breadcrumb-item>
-      <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-      <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+      <el-breadcrumb-item>商品详情</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="content">
       <div class="content-left">
         <div class="img-box">
-          <img src="http://placehold.it/520x520" alt="">
+          <!-- <img src="http://placehold.it/520x520" alt=""> -->
+          <img :src="`data:image/jpg;base64,${this.goodsInfor.imgs[0].url}`" alt="">
         </div>
         <div class="preview-box">
 
@@ -17,21 +16,22 @@
       </div>
       <div class="content-right">
         <div class="good-title">
-          <h4>灯饰五个</h4>
+          <h4>{{this.goodsInfor.gname}}</h4>
         </div>
         <div class="good-price">
           <div class="sale-price">
             <div class="text">售卖价：</div>
             <span class="price-icon">￥</span>
-            <span class="price">300</span>
+            <span class="price">{{this.goodsInfor.sale_price}}</span>
           </div>
           <div class="production-price">
             <div class="text">原价：</div>
-            <span class="price-line-through"> <span style="font-size:14px">￥</span>000</span>
+            <span class="price-line-through"> <span
+                style="font-size:14px">￥</span>{{this.goodsInfor.original_price}}</span>
           </div>
           <div class="sale-address">
             <div class="text">发布地：</div>
-            <span>重庆 九龙坡区</span>
+            <span>{{this.goodsInfor.address}}</span>
           </div>
           <div class="label">
             <span>包邮</span>
@@ -51,7 +51,7 @@
           <div class="contact">
             <!-- settlement -->
             <div>
-              <nuxt-link to="/settlement">立即购买</nuxt-link>
+              <nuxt-link :to="{name:'settlement',query:{buy:this.$route.query.search}}">立即购买</nuxt-link>
             </div>
           </div>
         </div>
@@ -63,17 +63,16 @@
         <div class="title">
           <img src="../assets/img/title_detail_description.png" alt="">
         </div>
-        <p>因为感觉和装修风格不搭，所以几个灯一起转出，风格独特，有情调。</p>
+        <p>{{this.goodsInfor.desc}}</p>
         <div class="img-description">
           <ul>
-            <li><img src="../assets/img/example.jpg" alt=""></li>
-            <li><img src="../assets/img/example.jpg" alt=""></li>
-            <li><img src="../assets/img/example.jpg" alt=""></li>
+            <li v-for="(item, index) in this.goodsInfor.imgs" :key="index">
+              <img :src="`data:image/jpg;base64,${item.url}`" alt="">
+            </li>
           </ul>
         </div>
       </div>
       <div class="detail-right">
-
       </div>
     </div>
 
@@ -82,7 +81,32 @@
 
 <script>
   export default {
-
+    data() {
+      return {
+        goodDetail: '',
+        param: '',
+        obj: {},
+        goodsInfor: {
+          imgs: [{
+            url:''
+          }]
+        }
+      }
+    },
+    created() {
+    },
+    mounted() {
+      let that = this;
+      this.$axios.post('/goods/getGoodInfor', {
+        _id: this.$route.query.search
+      }).then(res => {
+        that.goodsInfor = res.data.data;
+        
+      })
+      
+    },
+    methods: {
+    }
   }
 
 </script>
@@ -107,6 +131,10 @@
           width: 520px;
           height: 520px;
           margin-bottom: 10px;
+          img{
+            width: 520px;
+            height: 520px;
+          }
         }
 
         .preview-box {
@@ -317,6 +345,7 @@
               justify-content: center;
               align-items: center;
               box-sizing: border-box;
+              
             }
           }
 

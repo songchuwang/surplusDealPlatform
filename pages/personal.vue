@@ -38,13 +38,18 @@
               我的订单
             </div>
             <div class="header-nav">
-              <ul>
-                <li>全部</li>
-                <li>待付款</li>
-                <li>待发货</li>
-                <li>待收货</li>
-                <li>待评价</li>
-              </ul>
+              <el-tabs style="width:1000px" type="border-card" v-model="activeName" @tab-click="handleClick">
+                <el-tab-pane style="width:250px" label="全部" name="first">
+                  <div class="container">
+                    <div class="header"></div>
+                    <div class="content"></div>
+                    <div class="footer"></div>
+                  </div>
+                </el-tab-pane>
+                <el-tab-pane label="待付款" name="second">配置管理</el-tab-pane>
+                <el-tab-pane label="待发货" name="third">角色管理</el-tab-pane>
+                <el-tab-pane label="待收货" name="fourth">定时任务补偿</el-tab-pane>
+              </el-tabs>
             </div>
             <div>
 
@@ -71,16 +76,39 @@
   export default {
     data() {
       return {
-        isShowPage: 1
+        isShowPage: 1,
+        activeName: 'second',
+        goodsInfor: '',
+        orders: ''
       }
+    },
+    created () {
+      this.getOrder()
     },
     methods: {
       showPage(index) {
         this.isShowPage = index;
+      },
+      handleClick(tab, event) {
+        console.log(tab, event);
+      },
+      getOrder() {
+        let id = this.$store.state.geo.userId
+        this.$axios.post('/goods/getorder', {
+          id
+        }).then(res => {
+          console.log(res.data)
+        })
       }
     },
     mounted() {
-
+      this.$axios.post('/goods/getGoodInfor', {
+        _id: this.$route.query.buy
+      }).then(res => {
+        this.goodsInfor = res.data.data
+        // console.log(this.goodsInfor);
+        this.isShowPage = 2;
+      })
     },
   }
 
@@ -283,7 +311,7 @@
         }
 
         .page-three {
-        //   margin-top: -20px;
+          //   margin-top: -20px;
           position: relative;
           width: 1000px;
           height: 400px;
@@ -300,24 +328,26 @@
             }
 
             .content-detail {
-                box-sizing: border-box;
-                padding-left: 20px;
+              box-sizing: border-box;
+              padding-left: 20px;
+
               p {
                 line-height: 28px;
                 font-size: 14px;
                 color: #666;
-                .round-btn{
-                    display: inline-block;
-                    width: 64px;
-                    height: 20px;
-                    line-height: 20px;
-                    font-size: 12px;
-                    border: 1px solid #979797;
-                    color: #979797;
-                    text-align: center;
-                    border-radius: 10px;
-                    margin-left: 10px;
-                    cursor: pointer;
+
+                .round-btn {
+                  display: inline-block;
+                  width: 64px;
+                  height: 20px;
+                  line-height: 20px;
+                  font-size: 12px;
+                  border: 1px solid #979797;
+                  color: #979797;
+                  text-align: center;
+                  border-radius: 10px;
+                  margin-left: 10px;
+                  cursor: pointer;
                 }
               }
             }

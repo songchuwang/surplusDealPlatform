@@ -5,12 +5,14 @@ import User from "../dbs/models/users"
 import Passport from "./utils/passport"
 import Email from "../dbs/config"
 import axios from "./utils/axios"
+import Goods from '../dbs/models/goods'
 
 let router = new Router({
   prefix: "/users"
 })
 
 let Store = new Redis().client
+
 
 /**
  * -----注册接口-----
@@ -182,10 +184,11 @@ router.get('/exit', async (ctx, next)=>{
  */
 router.get('/getUser', async (ctx)=>{
   if(ctx.isAuthenticated()) {
-    const {username, email} = ctx.session.passport.user
+    const {username, email, _id} = ctx.session.passport.user
     ctx.body = {
       user: username,
-      email
+      email,
+      _id
     }
   } else {
     ctx.body = {
