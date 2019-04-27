@@ -25,7 +25,7 @@
           :on-remove="handleRemove" 
           :on-preview="handlePictureCardPreview"
           
-          accept="image/jpeg, image/jpg, image/png" 
+          accept=".jpeg, .jpg, .png" 
           :file-list="ruleForm.imgs" 
           list-type="picture-card"
           action="https://jsonplaceholder.typicode.com/posts/">
@@ -281,6 +281,7 @@
               return item.value == this.ruleForm.value
             });
             this.$axios.post('/goods/release', {
+              publisher: this.$store.state.geo.userId,
               gname: this.ruleForm.gname,
               desc: this.ruleForm.desc,
               imgs: this.base64_img,

@@ -1,6 +1,7 @@
 const state = ()=>({
   position: {},
   userId: "i'm ok",
+  isPay: "发布了么",
 })
 
 const mutations = {
@@ -9,6 +10,9 @@ const mutations = {
   },
   setUserId(state, val) {
     state.userId = val
+  },
+  isPayOff(state, val) {
+    state.isPay = val
   }
 }
 

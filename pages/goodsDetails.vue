@@ -10,9 +10,9 @@
           <!-- <img src="http://placehold.it/520x520" alt=""> -->
           <img :src="`data:image/jpg;base64,${this.goodsInfor.imgs[0].url}`" alt="">
         </div>
-        <div class="preview-box">
+        <!-- <div class="preview-box">
 
-        </div>
+        </div> -->
       </div>
       <div class="content-right">
         <div class="good-title">
@@ -50,7 +50,10 @@
           </div>
           <div class="contact">
             <!-- settlement -->
-            <div>
+            <div v-if="isSelfGoods == true">
+              <a href="#">该商品为您本人发布，不可自我购买</a>
+            </div>
+            <div v-else>
               <nuxt-link :to="{name:'settlement',query:{buy:this.$route.query.search}}">立即购买</nuxt-link>
             </div>
           </div>
@@ -86,27 +89,30 @@
         goodDetail: '',
         param: '',
         obj: {},
+        isSelfGoods: false,
         goodsInfor: {
           imgs: [{
-            url:''
+            url: ''
           }]
         }
       }
     },
-    created() {
-    },
+    created() {},
     mounted() {
       let that = this;
       this.$axios.post('/goods/getGoodInfor', {
         _id: this.$route.query.search
       }).then(res => {
-        that.goodsInfor = res.data.data;
-        
+        this.goodsInfor = res.data.data;
+        if (this.goodsInfor.publisher == this.$store.state.geo.userId) {
+          this.isSelfGoods = true
+        } else {
+          this.isSelfGoods = false
+        }
       })
-      
+
     },
-    methods: {
-    }
+    methods: {}
   }
 
 </script>
@@ -115,7 +121,7 @@
   .container {
     .content {
       width: 1190px;
-      height: 680px;
+      height: 600px;
       box-sizing: border-box;
       padding: 30px;
       background: #fff;
@@ -131,7 +137,8 @@
           width: 520px;
           height: 520px;
           margin-bottom: 10px;
-          img{
+
+          img {
             width: 520px;
             height: 520px;
           }
@@ -270,19 +277,21 @@
           }
 
           .contact {
-            width: 128px;
-            height: 40px;
-            line-height: 40px;
-            text-align: center;
-            background: #ff3434;
-            color: #fff;
-            font-family: jdzh-r;
-            font-size: 20px;
-            font-weight: 500;
+            // width: 128px;
+            // padding: 0 10px;
+            // height: 40px;
+            // line-height: 40px;
+            // text-align: center;
+            // background: #ff3434;
+            // color: #fff;
+            // font-family: jdzh-r;
+            // font-size: 20px;
+            // font-weight: 500;
 
             a {
               display: inline-block;
-              width: 128px;
+              // width: 128px;
+              padding: 0 12px;
               height: 40px;
               line-height: 40px;
               text-align: center;
@@ -345,7 +354,7 @@
               justify-content: center;
               align-items: center;
               box-sizing: border-box;
-              
+
             }
           }
 

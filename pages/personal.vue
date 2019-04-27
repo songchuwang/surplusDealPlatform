@@ -25,8 +25,26 @@
           <section class="content">
             <div class="surplus">我的闲置</div>
             <div class="select">
-              <div>已发布</div>
-              <div>已卖出</div>
+              <el-tabs type="border-card">
+                <el-tab-pane label="已发布">
+                  <div class="container" v-for="(item, index) in this.my_surplus" :key="index">
+                    <div class="order-header">
+                      {{item.gname}}
+                    </div>
+                    <div class="content">
+                      <img :src="`data:image/jpg;base64,${item.imgs[0].url}`" alt="">
+                      <div class="desc">{{item.desc}}</div>
+                      <div class="price">￥{{item.sale_price}}</div>
+                    </div>
+                    <div class="footer">
+                      <div @click="cancelOrder" class="cancel-order">取消发布</div>
+                      <div style="margin-right:20px;color:red;">买家已付款，请尽快发货</div>
+                      <div @click="payoff" class="payoff">发货</div>
+                    </div>
+                  </div>
+                </el-tab-pane>
+                <el-tab-pane label="已卖出">已卖出</el-tab-pane>
+              </el-tabs>
             </div>
             <div class="content-inner"></div>
           </section>
@@ -40,15 +58,72 @@
             <div class="header-nav">
               <el-tabs style="width:1000px" type="border-card" v-model="activeName" @tab-click="handleClick">
                 <el-tab-pane style="width:250px" label="全部" name="first">
-                  <div class="container">
-                    <div class="header"></div>
-                    <div class="content"></div>
-                    <div class="footer"></div>
+                  <div class="container" v-for="(item, index) in this.order_infor" :key="index">
+                    <div class="order-header">
+                      {{item.gname}}
+                    </div>
+                    <div class="content">
+                      <img :src="`data:image/jpg;base64,${item.imgs[0].url}`" alt="">
+                      <div class="desc">{{item.desc}}</div>
+                      <div class="price">￥{{item.sale_price}}</div>
+                    </div>
+                    <div class="footer">
+                      <div @click="cancelOrder" class="cancel-order">取消订单</div>
+                      <div @click="payoff" class="payoff">去付款</div>
+                    </div>
                   </div>
                 </el-tab-pane>
-                <el-tab-pane label="待付款" name="second">配置管理</el-tab-pane>
-                <el-tab-pane label="待发货" name="third">角色管理</el-tab-pane>
-                <el-tab-pane label="待收货" name="fourth">定时任务补偿</el-tab-pane>
+                <el-tab-pane label="待付款" name="second">
+                  <div class="container" v-for="(item, index) in this.order_infor" :key="index">
+                    <div class="order-header">
+                      {{item.gname}}
+                    </div>
+                    <div class="content">
+                      <img :src="`data:image/jpg;base64,${item.imgs[0].url}`" alt="">
+                      <div class="desc">{{item.desc}}</div>
+                      <div class="price">￥{{item.sale_price}}</div>
+                    </div>
+                    <div class="footer">
+                      <div @click="cancelOrder" class="cancel-order">取消订单</div>
+                      <div @click="payoff" class="payoff">付款</div>
+                    </div>
+                  </div>
+                </el-tab-pane>
+                <el-tab-pane label="待发货" name="third">
+                  <div class="container" v-for="(item, index) in this.order_infor" :key="index">
+                    <div class="order-header">
+                      <div class="gname">
+                        {{item.gname}}
+                      </div>
+                      <div class="wait">待发货</div>
+                    </div>
+                    <div class="content">
+                      <img :src="`data:image/jpg;base64,${item.imgs[0].url}`" alt="">
+                      <div class="desc">{{item.desc}}</div>
+                      <div class="price">￥{{item.sale_price}}</div>
+                    </div>
+                    <div class="footer">
+                      <div @click="remind" class="cancel-order">催发货</div>
+                      <div class="payoff">已付款</div>
+                    </div>
+                  </div>
+                </el-tab-pane>
+                <el-tab-pane label="待收货" name="fourth">
+                  <div class="container" v-for="(item, index) in this.order_infor" :key="index">
+                    <div class="order-header">
+                      {{item.gname}}
+                    </div>
+                    <div class="content">
+                      <img :src="`data:image/jpg;base64,${item.imgs[0].url}`" alt="">
+                      <div class="desc">{{item.desc}}</div>
+                      <div class="price">￥{{item.sale_price}}</div>
+                    </div>
+                    <div class="footer">
+                      <!-- <div @click="cancelOrder" class="cancel-order">取消订单</div> -->
+                      <div @click="receiving" class="payoff">确认收货</div>
+                    </div>
+                  </div>
+                </el-tab-pane>
               </el-tabs>
             </div>
             <div>
@@ -79,25 +154,59 @@
         isShowPage: 1,
         activeName: 'second',
         goodsInfor: '',
-        orders: ''
+        orders: '',
+        order_infor: [],
+        my_surplus:''
       }
     },
-    created () {
+    created() {
       this.getOrder()
+      this.mySurplus()
+      
     },
     methods: {
+      // 我发布的商品
+      mySurplus(){
+        this.$axios.post('goods/getGoods').then(res => {
+        //   console.log(res.data.data.filter((item)=>{
+          
+        //   return this.$store.state.geo.userId == item.publisher
+        // }));
+          
+          this.my_surplus = res.data.data.filter((item)=>{
+          
+          return this.$store.state.geo.userId == item.publisher
+        })
+          
+        })
+        
+        console.log(this.my_surplus);
+        
+      },
+      remind() {
+        this.$message.success('已提醒卖家')
+      },
+      payoff() {
+        this.$message.success('付款成功')
+        // if(this.ord)
+      },
+      receiving() {
+        this.$message.success('收货成功')
+      },
+      cancelOrder() {
+        this.$message.success('订单已取消')
+      },
       showPage(index) {
         this.isShowPage = index;
       },
       handleClick(tab, event) {
-        console.log(tab, event);
       },
       getOrder() {
         let id = this.$store.state.geo.userId
         this.$axios.post('/goods/getorder', {
           id
         }).then(res => {
-          console.log(res.data)
+          this.order_infor = res.data.data
         })
       }
     },
@@ -109,6 +218,8 @@
         // console.log(this.goodsInfor);
         this.isShowPage = 2;
       })
+
+      this.mySurplus();
     },
   }
 
@@ -227,7 +338,98 @@
           .content {
             width: 1000px;
             background: #fff;
-            margin-top: 20px;
+
+            .container {
+              width: 1000px;
+              display: flex;
+              flex-direction: column;
+              justify-content: flex-start;
+              box-sizing: border-box;
+              // border-bottom: 1px dashed #dfdfdf;
+            }
+
+            .order-header {
+              width: 100%;
+              height: 50px;
+              line-height: 50px;
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              border-bottom: 1px dashed #dfdfdf;
+              padding-left: 12px;
+            }
+
+            .content {
+              width: 100%;
+              height: 100px;
+              box-sizing: border-box;
+              padding: 12px 0;
+              // line-height: 76px;
+              display: flex;
+              flex-direction: row;
+              justify-content: flex-start;
+              align-items: center;
+              padding-left: 12px;
+
+              border-bottom: 1px dashed #dfdfdf;
+
+              // align-items: center;
+              .desc {
+                width: 800px;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                box-sizing: border-box;
+                padding-left: 10px;
+              }
+
+              .price {
+                font-size: 14px;
+                height: 100%;
+                font-family: jdZhengHeiRegular;
+                font-weight: 600;
+              }
+            }
+
+            .footer {
+              width: 100%;
+              height: 72px;
+              padding: 17px 0;
+              line-height: 38px;
+              box-sizing: border-box;
+              display: flex;
+              flex-direction: row;
+              justify-content: flex-end;
+              padding-left: 12px;
+
+              .cancel-order {
+                width: 90px;
+                height: 38px;
+                line-height: 38px;
+                background: #fff;
+                border: 1px solid #d9d9d9;
+                box-sizing: border-box;
+                color: #333333;
+                text-align: center;
+                border-radius: 20px;
+                margin-right: 20px;
+                cursor: pointer;
+              }
+
+              .payoff {
+                width: 90px;
+                height: 38px;
+                line-height: 38px;
+                background: #ff3434;
+                cursor: pointer;
+                box-sizing: border-box;
+                color: #fff;
+                text-align: center;
+                border-radius: 20px;
+                margin-right: 30px;
+              }
+            }
 
             .surplus {
               width: 100%;
@@ -239,29 +441,28 @@
               font-size: 16px;
             }
 
-            .select {
-              display: flex;
-              flex-direction: row;
-              justify-content: space-between;
-              box-sizing: border-box;
+            // .select {
+            //   display: flex;
+            //   flex-direction: row;
+            //   justify-content: space-between;
+            //   box-sizing: border-box;
 
-              >div {
-                width: 50%;
-                height: 55px;
-                line-height: 55px;
-                text-align: center;
-                box-sizing: border-box;
-                border-bottom: 1px solid #f0f3ef;
+            //   >div {
+            //     width: 50%;
+            //     height: 55px;
+            //     line-height: 55px;
+            //     text-align: center;
+            //     box-sizing: border-box;
+            //     border-bottom: 1px solid #f0f3ef;
 
-                &:first-child {
-                  border-right: 1px solid #f0f3ef;
-                }
-              }
-            }
+            //     &:first-child {
+            //       border-right: 1px solid #f0f3ef;
+            //     }
+            //   }
+            // }
 
             .content-inner {
               width: 100%;
-              height: 800px;
             }
 
           }
@@ -270,7 +471,7 @@
 
         .page-two {
           width: 100%;
-          height: 500px;
+          height: auto;
           background: #fff;
 
           .content {
@@ -288,6 +489,112 @@
               flex-direction: row;
               justify-content: space-between;
               width: 1000px;
+
+              /deep/ .el-tabs__content {
+                padding: 0;
+                box-sizing: border-box;
+              }
+
+              .container {
+                width: 1000px;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                box-sizing: border-box;
+                border-bottom: 1px dashed #dfdfdf;
+
+                .order-header {
+                  width: 100%;
+                  height: 50px;
+                  line-height: 50px;
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: space-between;
+                  border-bottom: 1px solid #dfdfdf;
+                  padding-left: 12px;
+
+                  .wait {
+                    margin-right: 80px;
+                    color: goldenrod;
+                  }
+                }
+
+                .content {
+                  width: 100%;
+                  height: 100px;
+                  box-sizing: border-box;
+                  padding: 12px 0;
+                  // line-height: 76px;
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: flex-start;
+                  align-items: center;
+                  padding-left: 12px;
+
+                  border-bottom: 1px solid #dfdfdf;
+
+                  img {
+                    width: 72px;
+                    height: 72px;
+                  }
+
+                  .desc {
+                    width: 800px;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    box-sizing: border-box;
+                    padding-left: 10px;
+                  }
+
+                  .price {
+                    font-size: 14px;
+                    height: 100%;
+                    font-family: jdZhengHeiRegular;
+                    font-weight: 600;
+                  }
+                }
+
+                .footer {
+                  width: 100%;
+                  height: 72px;
+                  padding: 17px 0;
+                  line-height: 38px;
+                  box-sizing: border-box;
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: flex-end;
+                  padding-left: 12px;
+
+                  .cancel-order {
+                    width: 90px;
+                    height: 38px;
+                    line-height: 38px;
+                    background: #fff;
+                    border: 1px solid #d9d9d9;
+                    box-sizing: border-box;
+                    color: #333333;
+                    text-align: center;
+                    border-radius: 20px;
+                    margin-right: 20px;
+                    cursor: pointer;
+                  }
+
+                  .payoff {
+                    width: 90px;
+                    height: 38px;
+                    line-height: 38px;
+                    background: #ff3434;
+                    cursor: pointer;
+                    box-sizing: border-box;
+                    color: #fff;
+                    text-align: center;
+                    border-radius: 20px;
+                    margin-right: 30px;
+                  }
+                }
+              }
 
               ul {
                 display: flex;

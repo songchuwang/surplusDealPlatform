@@ -2,6 +2,10 @@ import mongoose from "mongoose"
 const Schema = mongoose.Schema
 
 const GoodsSchema = new Schema({
+    publisher: {
+        type: String,
+        required:true
+    },
     gname: {
         type:String,
         required:true,

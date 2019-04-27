@@ -38,6 +38,7 @@ router.post('/getorder', async (ctx) => {
 
 router.post('/addorder', async (ctx) => {
   const {
+    publisher,
     id,
     gname,
     desc,
@@ -51,6 +52,7 @@ router.post('/addorder', async (ctx) => {
 
 
   let order = await Orders.create({
+    publisher,
     id,
     gname,
     desc,
@@ -79,6 +81,7 @@ router.post('/addorder', async (ctx) => {
 router.post('/release', async (ctx) => {
   global.console.log(ctx.request.body)
   const {
+    publisher,
     gname,
     desc,
     imgs,
@@ -91,6 +94,7 @@ router.post('/release', async (ctx) => {
 
 
   let ngood = await Goods.create({
+    publisher,
     gname,
     desc,
     imgs,

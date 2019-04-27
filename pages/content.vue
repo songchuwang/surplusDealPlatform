@@ -10,60 +10,92 @@
                 <nuxt-link to="/goodsList">
                   <a href="#">手机</a>
                 </nuxt-link>
+                <nuxt-link to="/goodsList">
                 <a href="#">笔记本电脑</a>
+                </nuxt-link>
               </div>
             </li>
             <li>
               <span class="popular">手机数码</span>
               <div class="category-details">
+                <nuxt-link to="/goodsList">
                 <a href="#">手机</a>
+                </nuxt-link>
+                <nuxt-link to="/goodsList">
                 <a href="#">耳机耳麦</a>
+                </nuxt-link>
               </div>
             </li>
             <li>
               <span class="popular">电脑办公</span>
               <div class="category-details">
+                <nuxt-link to="/goodsList">
                 <a href="#">笔记本</a>
+                </nuxt-link>
+                <nuxt-link to="/goodsList">
                 <a href="#">平板电脑</a>
+                </nuxt-link>
               </div>
             </li>
             <li>
               <span class="popular">电脑配件</span>
               <div class="category-details">
+                <nuxt-link to="/goodsList">
                 <a href="#">显示器</a>
+                </nuxt-link>
+                <nuxt-link to="/goodsList">
                 <a href="#">显卡</a>
+                </nuxt-link>
               </div>
             </li>
             <li>
               <span class="popular">摄影摄像</span>
               <div class="category-details">
+                <nuxt-link to="/goodsList">
                 <a href="#">单反相机</a>
+                </nuxt-link>
+                <nuxt-link to="/goodsList">
                 <a href="#">微单相机</a>
+                </nuxt-link>
               </div>
             </li>
             <li>
               <span class="popular">奢侈品</span>
               <div class="category-details">
+                <nuxt-link to="/goodsList">
                 <a href="#">手表</a>
+                </nuxt-link>
+                <nuxt-link to="/goodsList">
                 <a href="#">箱包</a>
+                </nuxt-link>
               </div>
             </li>
             <li>
               <span class="popular">家用电器</span>
               <div class="category-details">
+                <nuxt-link to="/goodsList">
                 <a href="#">冰箱</a>
+                </nuxt-link>
+                <nuxt-link to="/goodsList">
                 <a href="#">洗衣机</a>
+                </nuxt-link>
               </div>
             </li>
             <li>
               <span class="popular">图书</span>
               <div class="category-details">
+                <nuxt-link to="/goodsList">
                 <a href="#">教材</a>
+                </nuxt-link>
+                <nuxt-link to="/goodsList">
                 <a href="#">励志</a>
+                </nuxt-link>
               </div>
             </li>
           </ul>
+          <nuxt-link to="/goodsList">
           <a class="see-more" href="#">查看更多</a>
+          </nuxt-link>
         </div>
         <div class="slide">
           <!-- <img src="../assets/img/slide_1.png" alt=""> -->
@@ -120,7 +152,14 @@
         </div>
         <!-- 单项 -->
         <div class="buy-item-inner-item">
-          <ul>
+          <div class="nogoods" v-if="this.large_appliances.length == 0">
+            <div>暂无该类商品发布，点击去发布闲置商品吧</div>
+            <nuxt-link to="/release">
+              <img src="../assets/img/entrance.png" alt="">
+            </nuxt-link>
+          </div>
+          <ul v-else>
+
             <li v-for="(item, index) in large_appliances" :key="index">
               <nuxt-link :to="{name:'goodsDetails',query:{search:item._id}}">
                 <!-- <nuxt-link :to =`/goodsDetails/${index}`> -->
@@ -140,7 +179,13 @@
         </div>
         <!-- 单项 -->
         <div class="buy-item-inner-item">
-          <ul>
+          <div class="nogoods" v-if="this.decoration.length == 0">
+            <div>暂无该类商品发布，点击去发布闲置商品吧</div>
+            <nuxt-link to="/release">
+              <img src="../assets/img/entrance.png" alt="">
+            </nuxt-link>
+          </div>
+          <ul v-else>
             <li v-for="(item, index) in decoration" :key="index">
               <nuxt-link :to="{name:'goodsDetails',query:{search:item._id}}">
                 <!-- <nuxt-link :to =`/goodsDetails/${index}`> -->
@@ -159,7 +204,13 @@
         </div>
         <!-- 单项 -->
         <div class="buy-item-inner-item">
-          <ul>
+          <div class="nogoods" v-if="this.living_appliances.length == 0">
+            <div>暂无该类商品发布，点击去发布闲置商品吧</div>
+            <nuxt-link to="/release">
+              <img src="../assets/img/entrance.png" alt="">
+            </nuxt-link>
+          </div>
+          <ul v-else>
             <li v-for="(item, index) in living_appliances" :key="index">
               <nuxt-link :to="{name:'goodsDetails',query:{search:item._id}}">
                 <!-- <nuxt-link :to =`/goodsDetails/${index}`> -->
@@ -178,7 +229,13 @@
         </div>
         <!-- 单项 -->
         <div class="buy-item-inner-item">
-          <ul>
+          <div class="nogoods" v-if="this.book.length == 0">
+            <div>暂无该类商品发布，点击去发布闲置商品吧</div>
+            <nuxt-link to="/release">
+              <img src="../assets/img/entrance.png" alt="">
+            </nuxt-link>
+          </div>
+          <ul v-else>
             <li v-for="(item, index) in book" :key="index">
               <nuxt-link :to="{name:'goodsDetails',query:{search:item._id}}">
                 <!-- <nuxt-link :to =`/goodsDetails/${index}`> -->
@@ -197,7 +254,13 @@
         </div>
         <!-- 单项 -->
         <div class="buy-item-inner-item">
-          <ul>
+          <div class="nogoods" v-if="this.phoneList.length == 0">
+            <div>暂无该类商品发布，点击去发布闲置商品吧</div>
+            <nuxt-link to="/release">
+              <img src="../assets/img/entrance.png" alt="">
+            </nuxt-link>
+          </div>
+          <ul v-else>
             <li v-for="(item, index) in phoneList" :key="index">
               <nuxt-link :to="{name:'goodsDetails',query:{search:item._id}}">
                 <!-- <nuxt-link :to =`/goodsDetails/${index}`> -->
@@ -216,7 +279,13 @@
         </div>
         <!-- 单项 -->
         <div class="buy-item-inner-item">
-          <ul>
+          <div class="nogoods" v-if="this.digital.length == 0">
+            <div>暂无该类商品发布，点击去发布闲置商品吧</div>
+            <nuxt-link to="/release">
+              <img src="../assets/img/entrance.png" alt="">
+            </nuxt-link>
+          </div>
+          <ul v-else>
             <li v-for="(item, index) in digital" :key="index">
               <nuxt-link :to="{name:'goodsDetails',query:{search:item._id}}">
                 <!-- <nuxt-link :to =`/goodsDetails/${index}`> -->
@@ -268,12 +337,16 @@
       getAllGoods() {
         this.$axios.post('/goods/getGoods').then(res => {
           this.goods = res.data.data
-          this.phoneList = this.filterData('phone').slice(0, 3);
-          this.large_appliances = this.filterData('large_appliances').slice(0, 3);;
+
+          this.phoneList = this.filterData('phone').slice(this.phoneList.length - 4, this.phoneList.length - 1);
+          this.large_appliances = this.filterData('large_appliances').slice(0, 3);
+          console.log(this.filterData('decoration').slice(0, 3).length);
           this.decoration = this.filterData('decoration').slice(0, 3);;
           this.living_appliances = this.filterData('living_appliances').slice(0, 3);;
           this.digital = this.filterData('digital').slice(0, 3);;
           this.book = this.filterData('book').slice(0, 3);
+          // console.log(decoration);
+
         })
       }
     }
@@ -547,6 +620,23 @@
       .buy-item-inner-item {
         width: 540px;
         height: 272px;
+
+        .nogoods {
+          // padding: 20px;
+          // background-color: #ccc;
+          color: #333;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: center;
+          div{
+            margin-bottom: 10px;
+          }
+          img{
+            width: 190px;
+            height: 250px;
+          }
+        }
 
         ul {
           display: flex;
