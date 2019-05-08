@@ -198,4 +198,28 @@ router.get('/getUser', async (ctx)=>{
   }
 })
 
+/** 
+ * 获取商品发布人信息
+ * 
+*/
+router.post('/getGoodsReleaser', async (ctx)=>{
+  const {
+    _id
+  } = ctx.request.body
+
+  let user = await User.find({_id})
+  if(user){
+    ctx.body = {
+      code:0,
+      msg:'查询成功',
+      data:user
+    }
+  }else {
+    ctx.body = {
+      code:-1,
+      msg:'查询失败'
+    }
+  }
+})
+
 export default router;

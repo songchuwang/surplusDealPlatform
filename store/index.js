@@ -15,7 +15,7 @@ const store = ()=>new Vuex.Store({
     async nuxtServerInit({commit}, {req, app}) {
       {
         app.$axios.get('/users/getUser').then(res => {
-          console.log(res.data._id);
+          console.log('test',res.data._id);
           
           commit('geo/setUserId', res.data._id)
         })
@@ -27,20 +27,20 @@ const store = ()=>new Vuex.Store({
         commit('geo/setPosition', status === 200 ? {city, province} : {city: '', province: ''})
       }
 
-      {
-        const {status, data: {menu}} = await app.$axios.get('/geo/menu')
-        commit('home/setMenu', status === 200 ? menu : [])
-      }
+      // {
+      //   const {status, data: {menu}} = await app.$axios.get('/geo/menu')
+      //   commit('home/setMenu', status === 200 ? menu : [])
+      // }
 
-      {
-        //console.log(app)
-        const {status, data: {result}} = await app.$axios.get('/search/hotPlace', {
-          params: {
-            city: app.store.state.geo.position.city.replace('市', '')
-          }
-        })
-        commit('search/setHotPlace', status === 200 ? result : [])
-      }
+      // {
+      //   //console.log(app)
+      //   const {status, data: {result}} = await app.$axios.get('/search/hotPlace', {
+      //     params: {
+      //       city: app.store.state.geo.position.city.replace('市', '')
+      //     }
+      //   })
+      //   commit('search/setHotPlace', status === 200 ? result : [])
+      // }
 
     }
   }

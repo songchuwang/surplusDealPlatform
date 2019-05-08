@@ -4,7 +4,7 @@
       <h2>收货信息</h2>
       <div class="take-good-infors">
         <div class="item" v-for="(item,index) in addresses" :key="index">
-          <div class="person">{{item.name}}
+          <div class="person">{{receiver}}
             <img src="../assets/img/selected.png" alt="">
           </div>
           <div class="ad-detail">
@@ -35,7 +35,7 @@
         </div>
         <div class="order-info-detail">
           <p style="margin-right:50px">寄送至：<span>广东深圳市南山区南山区软件产业基地软件大厦6楼</span></p>
-          <p>收货人：<span style="margin-right:10px">宋楚望</span><span>153****1156</span></p>
+          <p>收货人：<span style="margin-right:10px">{{this.receiver}}</span><span>153****1156</span></p>
         </div>
       </div>
       <div class="submit-order">
@@ -53,6 +53,7 @@
       return {
         goods_infor: '',
         obj: {},
+        receiver:'',
         goodsInfor: {
           imgs: [{
             url:''
@@ -93,7 +94,10 @@
         console.log(this.goodsInfor.imgs[0]);
         
         
-      })
+      });
+      this.$axios.get('/users/getUser').then(res => {
+        this.receiver = decodeURIComponent(res.data.user);
+      });
       
     },
     methods: {

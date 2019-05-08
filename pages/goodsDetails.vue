@@ -45,7 +45,7 @@
               <img src="../assets/img/avatar.png" alt="">
             </div>
             <div class="detail">
-              <span class="name">前后左右端工程师</span>
+              <span class="name">{{this.owner}}</span>
             </div>
           </div>
           <div class="contact">
@@ -89,6 +89,7 @@
         goodDetail: '',
         param: '',
         obj: {},
+        owner:'',
         isSelfGoods: false,
         goodsInfor: {
           imgs: [{
@@ -104,6 +105,11 @@
         _id: this.$route.query.search
       }).then(res => {
         this.goodsInfor = res.data.data;
+        this.$axios.post('/users/getGoodsReleaser',{_id:this.goodsInfor.publisher})
+        .then(response => {
+          this.owner =decodeURIComponent(response.data.data[0].username);
+          
+        })
         if (this.goodsInfor.publisher == this.$store.state.geo.userId) {
           this.isSelfGoods = true
         } else {

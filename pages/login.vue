@@ -58,8 +58,14 @@ export default {
         password: CryptoJs.MD5(this.password).toString()
       })
         .then(({status, data})=>{
+          console.log(data);
+          
           if(status === 200) {
-            if(data && data.code === 0) {
+            if(data && data.code == 0 && data.user.username == 'admin'){
+              this.$message.success('你是管理员');
+              location.href = '/admin'
+              return 
+            }else if(data && data.code === 0) {
               location.href = '/'
             } else {
               this.error = data.msg

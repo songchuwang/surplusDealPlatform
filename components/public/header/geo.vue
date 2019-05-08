@@ -1,7 +1,7 @@
 <template>
   <div class="m-geo">
     <i class="el-icon-location"/>
-    {{ $store.state.geo.position.city }}
+    <!-- {{ $store.state.geo.position.city}} -->
     <!-- {{ $store.state.geo.userId }} -->
     <nuxt-link
       class="changeCity"

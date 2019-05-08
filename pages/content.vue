@@ -328,6 +328,9 @@
     created() {
       this.getAllGoods()
     },
+    mounted () {
+      // this.$store.dispatch
+    },
     methods: {
       filterData(kind) {
         return this.goods.filter((item) => {
@@ -335,6 +338,7 @@
         });
       },
       getAllGoods() {
+
         this.$axios.post('/goods/getGoods').then(res => {
           this.goods = res.data.data
 

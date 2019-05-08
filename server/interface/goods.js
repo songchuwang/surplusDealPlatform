@@ -6,12 +6,162 @@ import Email from "../dbs/config"
 import axios from "./utils/axios"
 import Goods from '../dbs/models/goods'
 import Orders from '../dbs/models/order'
+import Delivery from '../dbs/models/delivery'
+import Wait from '../dbs/models/wait'
 
 let router = new Router({
   prefix: "/goods"
 })
 
 let Store = new Redis().client
+// 待发货转已发货
+router.post('/getWaitGoods', async (ctx) => {
+  let order_list = await Wait.find({})
+
+  if (order_list) {
+    ctx.body = {
+      code: 0,
+      msg: '查询成功',
+      data: order_list
+    }
+  } else {
+    ctx.body = {
+      code: -1,
+      msg: '查询失败'
+    }
+  }
+
+})
+router.post('/addWait', async (ctx) => {
+  const {
+    publisher,
+    id,
+    gname,
+    desc,
+    imgs,
+    address,
+    sale_price,
+    postage,
+    original_price,
+    type
+  } = ctx.request.body;
+
+  Delivery.remove({id}, function (err, docs) {
+    if (err) console.log(err);
+    console.log('删除成功：' + docs);
+  });
+
+  let wait = await Wait.create({
+    publisher,
+    id,
+    gname,
+    desc,
+    imgs,
+    address,
+    sale_price,
+    postage,
+    original_price,
+    type
+  })
+  if (wait) {
+    ctx.body = {
+      code: 0,
+      msg: '添加成功'
+    }
+  } else {
+    ctx.body = {
+      code: -1,
+      msg: '添加失败'
+    }
+  }
+
+})
+// 待付款转待发货
+router.post('/getAllDelivery', async (ctx) => {
+  let order_list = await Delivery.find({})
+
+  if (order_list) {
+    ctx.body = {
+      code: 0,
+      msg: '查询成功',
+      data: order_list
+    }
+  } else {
+    ctx.body = {
+      code: -1,
+      msg: '查询失败'
+    }
+  }
+
+})
+router.post('/getDelivery', async (ctx) => {
+
+  const {id} = ctx.request.body
+  let order_list = await Delivery.find({id})
+
+  if (order_list) {
+    ctx.body = {
+      code: 0,
+      msg: '查询成功',
+      data: order_list
+    }
+  } else {
+    ctx.body = {
+      code: -1,
+      msg: '查询失败'
+    }
+  }
+
+})
+
+router.post('/addDelivery', async (ctx) => {
+  const {
+    publisher,
+    id,
+    gname,
+    desc,
+    imgs,
+    address,
+    sale_price,
+    postage,
+    original_price,
+    type
+  } = ctx.request.body;
+
+  Orders.remove({id}, function (err, docs) {
+    if (err) console.log(err);
+    console.log('删除成功：' + docs);
+  });
+
+  let delivery = await Delivery.create({
+    publisher,
+    id,
+    gname,
+    desc,
+    imgs,
+    address,
+    sale_price,
+    postage,
+    original_price,
+    type
+  })
+  if (delivery) {
+    ctx.body = {
+      code: 0,
+      msg: '添加成功'
+    }
+  } else {
+    ctx.body = {
+      code: -1,
+      msg: '添加失败'
+    }
+  }
+
+})
+
+
+// 到待付款
+
 router.post('/getorder', async (ctx) => {
   const {
     id

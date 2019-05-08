@@ -2,6 +2,7 @@ const state = ()=>({
   position: {},
   userId: "i'm ok",
   isPay: "发布了么",
+  user:""
 })
 
 const mutations = {
@@ -13,6 +14,9 @@ const mutations = {
   },
   isPayOff(state, val) {
     state.isPay = val
+  },
+  getUser(state, val) {
+    state.user = val
   }
 }
 
@@ -20,8 +24,11 @@ const actions = {
   setPosition: ({commit}, position)=>{
     commit('setPosition', position)
   },
-  setUserId: ({commit}, position)=>{
-    commit('setUserId', position)
+  setUserId: ({commit}, val)=>{
+    commit('setUserId', val)
+  },
+  getUser: ({commit}, val)=>{
+    commit('getUser', val)
   },
 }
 

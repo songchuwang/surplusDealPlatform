@@ -14,7 +14,7 @@
               <div class="img">
                 <img src="../assets/img/personal.jpg" alt="">
               </div>
-              <div class="name">songchuwang</div>
+              <div class="name">{{this.user}}</div>
             </div>
             <div class="header-content">
               <div class="header">我的管理</div>
@@ -36,14 +36,60 @@
                       <div class="desc">{{item.desc}}</div>
                       <div class="price">￥{{item.sale_price}}</div>
                     </div>
-                    <div class="footer">
-                      <div @click="cancelOrder" class="cancel-order">取消发布</div>
-                      <div style="margin-right:20px;color:red;">买家已付款，请尽快发货</div>
-                      <div @click="payoff" class="payoff">发货</div>
+                    <div style="padding-right:20px" class="footer">
+                      <div style="background: #ff3434;color:#fff" @click="cancelOrder" class="cancel-order">取消发布</div>
                     </div>
                   </div>
                 </el-tab-pane>
-                <el-tab-pane label="已卖出">已卖出</el-tab-pane>
+                <el-tab-pane label="待发货">
+                  <div class="container" v-for="(item, index) in this.releaser_deliveries" :key="index">
+                    <div class="order-header">
+                      {{item.gname}}
+                    </div>
+                    <div class="content">
+                      <img :src="`data:image/jpg;base64,${item.imgs[0].url}`" alt="">
+                      <div class="desc">{{item.desc}}</div>
+                      <div class="price">￥{{item.sale_price}}</div>
+                    </div>
+                    <div class="footer">
+                      <!-- <div @click="cancelOrder" class="cancel-order">取消发布</div> -->
+                      <div style="margin-right:20px;color:red;">买家已付款，请尽快发货</div>
+                      <div @click="deliverGoods(item)" class="payoff">发货</div>
+                    </div>
+                  </div>
+                </el-tab-pane>
+                <el-tab-pane label="待收货">
+                  <div class="container" v-for="(item, index) in this.wait_release" :key="index">
+                    <div class="order-header">
+                      {{item.gname}}
+                    </div>
+                    <div class="content">
+                      <img :src="`data:image/jpg;base64,${item.imgs[0].url}`" alt="">
+                      <div class="desc">{{item.desc}}</div>
+                      <div class="price">￥{{item.sale_price}}</div>
+                    </div>
+                    <div class="footer">
+                      <div style="margin-right:20px;color:red;">您已发货，等待买家确认收货</div>
+                      <div @click="payoff" class="payoff">已发货</div>
+                    </div>
+                  </div>
+                </el-tab-pane>
+                <el-tab-pane label="已完成">
+                  <div class="container" v-for="(item, index) in this.my_surplus" :key="index">
+                    <div class="order-header">
+                      {{item.gname}}
+                    </div>
+                    <div class="content">
+                      <img :src="`data:image/jpg;base64,${item.imgs[0].url}`" alt="">
+                      <div class="desc">{{item.desc}}</div>
+                      <div class="price">￥{{item.sale_price}}</div>
+                    </div>
+                    <div class="footer">
+                      <div style="margin-right:20px;color:red;">已完成订单</div>
+                      <div @click="payoff" class="payoff">删除订单</div>
+                    </div>
+                  </div>
+                </el-tab-pane>
               </el-tabs>
             </div>
             <div class="content-inner"></div>
@@ -58,7 +104,7 @@
             <div class="header-nav">
               <el-tabs style="width:1000px" type="border-card" v-model="activeName" @tab-click="handleClick">
                 <el-tab-pane style="width:250px" label="全部" name="first">
-                  <div class="container" v-for="(item, index) in this.order_infor" :key="index">
+                  <div class="container" v-for="(item, index) in this.all_orders" :key="index">
                     <div class="order-header">
                       {{item.gname}}
                     </div>
@@ -85,12 +131,12 @@
                     </div>
                     <div class="footer">
                       <div @click="cancelOrder" class="cancel-order">取消订单</div>
-                      <div @click="payoff" class="payoff">付款</div>
+                      <div @click="payoff(item)" class="payoff">付款</div>
                     </div>
                   </div>
                 </el-tab-pane>
                 <el-tab-pane label="待发货" name="third">
-                  <div class="container" v-for="(item, index) in this.order_infor" :key="index">
+                  <div class="container" v-for="(item, index) in this.deliveries" :key="index">
                     <div class="order-header">
                       <div class="gname">
                         {{item.gname}}
@@ -153,41 +199,63 @@
       return {
         isShowPage: 1,
         activeName: 'second',
+        all_orders: [],
         goodsInfor: '',
+        wait_release:[],
         orders: '',
+        releaser_deliveries: [],
+        deliveries: '',
         order_infor: [],
-        my_surplus:''
+        my_surplus: '',
+        user: ''
       }
     },
     created() {
       this.getOrder()
       this.mySurplus()
-      
+
     },
     methods: {
+      deliverGoods(item) {
+        // console.log(item);
+        
+        this.$axios.post('/goods/addWait',item).then(res=>{
+          // console.log(res.data.data);
+          if(res.status == 200) {
+            this.wait_release = res.data.data
+            console.log(this.wait_release);
+            
+            this.$message.success('发货成功，等待买家收货')
+          }
+        })
+        
+      },
       // 我发布的商品
-      mySurplus(){
+      mySurplus() {
         this.$axios.post('goods/getGoods').then(res => {
-        //   console.log(res.data.data.filter((item)=>{
-          
-        //   return this.$store.state.geo.userId == item.publisher
-        // }));
-          
-          this.my_surplus = res.data.data.filter((item)=>{
-          
-          return this.$store.state.geo.userId == item.publisher
+          this.my_surplus = res.data.data.filter((item) => {
+            return this.$store.state.geo.userId == item.publisher
+          })
         })
-          
-        })
-        
-        console.log(this.my_surplus);
-        
+
       },
       remind() {
         this.$message.success('已提醒卖家')
       },
-      payoff() {
+
+      payoff(item) {
+        // console.log(item);
+
         this.$message.success('付款成功')
+        this.$axios.post('/goods/addDelivery', item).then(res => {
+          if (res.status == 200) {
+            this.$message.success('付款成功')
+            setTimeout(() => {
+              window.location.reload()
+            }, 1000)
+          }
+
+        })
         // if(this.ord)
       },
       receiving() {
@@ -199,8 +267,7 @@
       showPage(index) {
         this.isShowPage = index;
       },
-      handleClick(tab, event) {
-      },
+      handleClick(tab, event) {},
       getOrder() {
         let id = this.$store.state.geo.userId
         this.$axios.post('/goods/getorder', {
@@ -215,11 +282,40 @@
         _id: this.$route.query.buy
       }).then(res => {
         this.goodsInfor = res.data.data
-        // console.log(this.goodsInfor);
         this.isShowPage = 2;
+      })
+      this.$axios.get('/users/getUser').then(res => {
+        this.user = decodeURIComponent(res.data.user);
+      });
+      console.log(this.$store.state.geo.userId);
+      
+
+      this.$axios.post('/goods/getAllDelivery', {}).then(res => {
+        console.log('delevery',res.data.data);
+        this.releaser_deliveries = res.data.data.filter((item)=>{
+          return item.publisher == this.$store.state.geo.userId
+        })
+        
+      })
+      
+
+
+      this.$axios.post('/goods/getDelivery', {
+        id: this.$store.state.geo.userId
+      }).then(res => {
+
+        this.deliveries = res.data.data;
+        this.all_orders = this.deliveries.concat(this.order_infor);
+      })
+      
+      this.$axios.post('/goods/getWaitGoods').then(res=>{
+        this.wait_release = res.data.data.filter((item)=>{
+          return item.publisher == this.$store.state.geo.userId
+        });
       })
 
       this.mySurplus();
+
     },
   }
 

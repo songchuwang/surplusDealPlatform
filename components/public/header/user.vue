@@ -29,10 +29,7 @@
         async mounted(){
           const {status, data:{ user, _id }} = await this.$axios.get('/users/getUser');
           if(status === 200) {
-            this.user = user;
-            console.log(_id);
-            // $store.dispatch('setUserId', _id)
-            // $store.commit('setUserId', _id);
+            this.user = decodeURIComponent(user);
             
           }
 

@@ -19,7 +19,7 @@
         </el-form-item>
 
         <el-form-item prop="imgs">
-          <div>上传商品图片 <span>多角度拍摄商品细节，全面展示商品；图片大小不能超过2M哦~</span></div>
+          <div>上传头像<span>多角度拍摄商品细节，全面展示商品；图片大小不能超过2M哦~</span></div>
           <el-upload 
           :on-success="handleImgSuccess" 
           :on-remove="handleRemove" 
@@ -291,7 +291,11 @@
               original_price: this.ruleForm.original_price,
               type: type
 
-            }).then(res => console.log(res.data))
+            }).then(res => {
+              if(res.status == 200){
+                this.$message.success('发布成功')
+              }
+            })
           } else {
             this.$message.error('请输入必要信息')
           }
