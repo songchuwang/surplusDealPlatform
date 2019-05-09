@@ -1,6 +1,12 @@
 <template>
   <div class="m-user">
-    <template v-if="user">
+    <template v-if="user == 'admin'">
+      <nuxt-link to="/admin">
+      欢迎您，<span class="username">{{ user }}</span>
+      </nuxt-link>
+      <nuxt-link to="/exit">[退出]</nuxt-link>
+    </template>
+    <template v-else-if="user">
       <nuxt-link to="/personal">
       欢迎您，<span class="username">{{ user }}</span>
       </nuxt-link>

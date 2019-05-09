@@ -37,7 +37,7 @@
                       <div class="price">￥{{item.sale_price}}</div>
                     </div>
                     <div style="padding-right:20px" class="footer">
-                      <div style="background: #ff3434;color:#fff" @click="cancelOrder" class="cancel-order">取消发布</div>
+                      <div style="background: #ff3434;color:#fff" @click="cancelRelease(item)" class="cancel-order">取消发布</div>
                     </div>
                   </div>
                 </el-tab-pane>
@@ -75,7 +75,7 @@
                   </div>
                 </el-tab-pane>
                 <el-tab-pane label="已完成">
-                  <div class="container" v-for="(item, index) in this.my_surplus" :key="index">
+                  <div class="container" v-for="(item, index) in this.release_complete" :key="index">
                     <div class="order-header">
                       {{item.gname}}
                     </div>
@@ -84,9 +84,9 @@
                       <div class="desc">{{item.desc}}</div>
                       <div class="price">￥{{item.sale_price}}</div>
                     </div>
-                    <div class="footer">
-                      <div style="margin-right:20px;color:red;">已完成订单</div>
-                      <div @click="payoff" class="payoff">删除订单</div>
+                    <div class="footer" style="padding-right:40px">
+                      <div style="color:red;">已完成订单</div>
+                      <!-- <div @click="payoff" class="payoff">删除订单</div> -->
                     </div>
                   </div>
                 </el-tab-pane>
@@ -114,7 +114,7 @@
                       <div class="price">￥{{item.sale_price}}</div>
                     </div>
                     <div class="footer">
-                      <div @click="cancelOrder" class="cancel-order">取消订单</div>
+                      <div @click="cancelOrder(item)" class="cancel-order">取消订单</div>
                       <div @click="payoff" class="payoff">去付款</div>
                     </div>
                   </div>
@@ -130,7 +130,7 @@
                       <div class="price">￥{{item.sale_price}}</div>
                     </div>
                     <div class="footer">
-                      <div @click="cancelOrder" class="cancel-order">取消订单</div>
+                      <div @click="cancelOrder(item)" class="cancel-order">取消订单</div>
                       <div @click="payoff(item)" class="payoff">付款</div>
                     </div>
                   </div>
@@ -155,7 +155,7 @@
                   </div>
                 </el-tab-pane>
                 <el-tab-pane label="待收货" name="fourth">
-                  <div class="container" v-for="(item, index) in this.order_infor" :key="index">
+                  <div class="container" v-for="(item, index) in this.confirm_receipt" :key="index">
                     <div class="order-header">
                       {{item.gname}}
                     </div>
@@ -166,7 +166,24 @@
                     </div>
                     <div class="footer">
                       <!-- <div @click="cancelOrder" class="cancel-order">取消订单</div> -->
-                      <div @click="receiving" class="payoff">确认收货</div>
+                      <div @click="confirmReceipt(item)" class="payoff">确认收货</div>
+                    </div>
+                  </div>
+                </el-tab-pane>
+                <el-tab-pane label="已完成" name="five">
+                  <div class="container" v-for="(item, index) in this.complete" :key="index">
+                    <div class="order-header">
+                      {{item.gname}}
+                    </div>
+                    <div class="content">
+                      <img :src="`data:image/jpg;base64,${item.imgs[0].url}`" alt="">
+                      <div class="desc">{{item.desc}}</div>
+                      <div class="price">￥{{item.sale_price}}</div>
+                    </div>
+                    <div class="footer">
+                      <!-- <div @click="cancelOrder" class="cancel-order">取消订单</div> -->
+                      <div style="margin-right:20px;color:red;">订单已完成</div>
+                      <!-- <div @click="confirmReceipt(item)" class="payoff">确认收货</div> -->
                     </div>
                   </div>
                 </el-tab-pane>
@@ -202,11 +219,14 @@
         all_orders: [],
         goodsInfor: '',
         wait_release:[],
+        confirm_receipt: [],
         orders: '',
         releaser_deliveries: [],
         deliveries: '',
         order_infor: [],
         my_surplus: '',
+        complete:[],
+        release_complete:[],
         user: ''
       }
     },
@@ -216,6 +236,45 @@
 
     },
     methods: {
+      cancelRelease(item) {
+        console.log(item._id);
+        
+        this.$axios.post('/goods/searchComplete',{
+          _id:item._id
+        }).then(res=>{
+          console.log(res.data.code);
+          
+          if(res.data.code == 0){
+            this.$message.error('该商品已完成交易，无法取消')
+          }else if(res.data.code == -1){
+            this.$message.success("已取消发布")
+            this.$axios.post('/goods/removeGoods',{
+              _id:item._id
+            }).then(res2 => {
+              console.log(res2);
+              if(res2.status == 200){
+                window.location.reload()
+              }
+              
+            })
+          }
+        })
+        // console.log(item);
+        
+      },
+      confirmReceipt(item) {
+        this.$axios.post('/goods/toComplete',item).then(res=>{
+          if(res.status == 200){
+            
+            this.$message.success('收货成功')
+            setTimeout(()=>{
+              window.location.reload()
+            },1000)
+          }
+          
+        })
+        
+      },
       deliverGoods(item) {
         // console.log(item);
         
@@ -261,8 +320,15 @@
       receiving() {
         this.$message.success('收货成功')
       },
-      cancelOrder() {
-        this.$message.success('订单已取消')
+      cancelOrder(item) {
+        console.log(item);
+        
+        this.$axios.post('/goods/cancelOrder', item).then(res=>{
+          if(res.status == 200){
+            this.$message.success('订单已取消')
+          }
+        })
+        
       },
       showPage(index) {
         this.isShowPage = index;
@@ -307,9 +373,26 @@
         this.deliveries = res.data.data;
         this.all_orders = this.deliveries.concat(this.order_infor);
       })
-      
+
+      this.$axios.post('/goods/getWaitGoods').then(res=>{
+        this.confirm_receipt = res.data.data.filter((item)=>{
+          return item.id == this.$store.state.geo.userId
+        });
+      })
+      // confirm_receipt
       this.$axios.post('/goods/getWaitGoods').then(res=>{
         this.wait_release = res.data.data.filter((item)=>{
+          return item.publisher == this.$store.state.geo.userId
+        });
+      })
+      this.$axios.post('/goods/getComplete').then(res=>{
+        this.complete = res.data.data.filter((item)=>{
+          return item.id == this.$store.state.geo.userId
+        });
+      })
+      // release_complete
+      this.$axios.post('/goods/getComplete').then(res=>{
+        this.release_complete = res.data.data.filter((item)=>{
           return item.publisher == this.$store.state.geo.userId
         });
       })

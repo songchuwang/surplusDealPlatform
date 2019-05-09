@@ -99,6 +99,7 @@
       return {
         input: '',
         dialogImageUrl: '',
+        user:'',
         dialogVisible: false,
         base64_img: [],
         ruleForm: {
@@ -289,7 +290,9 @@
               sale_price: this.ruleForm.sale_price,
               postage: this.ruleForm.postage,
               original_price: this.ruleForm.original_price,
-              type: type
+              type: type,
+              user_publisher:this.user
+
 
             }).then(res => {
               if(res.status == 200){
@@ -333,6 +336,19 @@
         this.dialogImageUrl = file.url;
         this.dialogVisible = true;
       }
+    },
+    mounted () {
+      console.log(this.user);
+      
+    },
+    created () {
+      // this.$axios.post('/users/getUser')
+      this.$axios.get('/users/getUser').then(res=>{
+        this.user = res.data.user;
+        // console.log(res.data.user);
+        
+      })
+      
     }
   }
 

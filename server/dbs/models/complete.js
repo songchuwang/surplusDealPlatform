@@ -1,14 +1,14 @@
 import mongoose from "mongoose"
 const Schema = mongoose.Schema
 
-const GoodsSchema = new Schema({
-    user_publisher:{
-        type: String,
-        required:true
-    },
+const CompleteSchema = new Schema({
     publisher: {
         type: String,
         required:true
+    },
+    id:{
+        type:String,
+        required:true,
     },
     gname: {
         type:String,
@@ -43,4 +43,4 @@ const GoodsSchema = new Schema({
     }
 })
 
-export default mongoose.model("Goods", GoodsSchema)
+export default mongoose.model("Complete", CompleteSchema)
